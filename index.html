@@ -1,0 +1,137 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Coloring options for textured buildings | Sample | ArcGIS Maps SDK for JavaScript 4.31</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      #colorMixMode {
+        background-color: white;
+        padding: 12px;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.31/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.31/"></script>
+
+    <script>
+
+let openweathermapapi = '95de4d1641b053b5e200f8e7e94eb256';
+
+let cityId = 2509520; // City ID for the desired location
+
+let apiUrl = `http://api.openweathermap.org/data/2.5/weather?id=2509520&units=metric&lang=en&appid=95de4d1641b053b5e200f8e7e94eb256`;
+let temp_max
+let temp_min
+let temp_current
+async function fetchWeatherData() {
+    try {
+        let response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+        }
+        let data = await response.json();
+        //console.log(data.main.temp_max, data.main.temp_min); // Log the weather data
+        temp_max = data.main.temp_max;
+        temp_min = data.main.temp_min;
+        temp_current = data.main.temp;
+        return {temp_max, temp_min, temp_current}; // Return the weather data for further use
+      } catch (error) {
+          console.error('Error fetching weather data:', error);
+      }
+      }
+
+      if (temp_current >= 1.0 && temp_current < 5){
+            weather_color = "blue"
+      }
+      else if (temp_current >= 5.0 && temp_current < 10){
+        weather_color = "green"
+      }
+      else if (temp_current >= 10.0 && temp_current < 15){
+        weather_color = "yellow"
+      }
+      else if (temp_current >= 15.0 && temp_current < 20){
+        weather_color = "orange"
+      }
+      else if (temp_current >= 20.0 && temp_current < 25){
+        weather_color = "red"
+      }
+      else {
+        weather_color = "purple"
+      }
+      console.log(weather_color)
+
+      require(["esri/WebScene", "esri/views/SceneView", "esri/layers/SceneLayer", "esri/widgets/Legend"], (
+        WebScene,
+        SceneView,
+        SceneLayer,
+        Legend
+      ) => {
+        // Load a webscene and add it to the view
+        const webscene = new WebScene({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "4dce380fe78543d79a5bff595db4488b"
+          }
+        });
+
+        const view = new SceneView({
+          container: "viewDiv",
+          map: webscene
+        });
+
+        const symbol = {
+          type: "mesh-3d", // autocasts as new MeshSymbol3D()
+          symbolLayers: [
+            {
+              type: "fill", // autocasts as new FillSymbol3DLayer()
+              material: {
+                color: weather_color},
+              colorMixMode: "multiply",
+            }
+            
+          ]
+        };
+
+        // Create SceneLayer with textured buildings
+        const layer = new SceneLayer({
+          portalItem: {
+            id: "e0d1b9938de747abb0171da501e3f38e"
+          },
+          title: "Laundry",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+
+        webscene.add(layer);
+      })
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <div id="colorMixMode" class="esri-widget">
+      <input type="radio" id="original" name="mode" checked />
+      <label for="original">Buildings with original texture</label> <br />
+      <input type="radio" id="select" name="mode" />
+      <label for="select">Show commercial buildings</label> <br />
+      <input type="radio" id="emphasize" name="mode" />
+      <label for="emphasize">Emphasize commercial buildings</label> <br />
+      <input type="radio" id="desaturate" name="mode" />
+      <label for="desaturate">Desaturate texture</label> <br />
+      <input type="radio" id="replace" name="mode" />
+      <label for="replace">Remove texture</label>
+    </div>
+  </body>
+</html>
