@@ -2,8 +2,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Coloring options for textured buildings | Sample | ArcGIS Maps SDK for JavaScript 4.31</title>
-    <style>
+    <title>ArcGIS Version of Aras de los Olmos</title>
+    <style>  
       html,
       body,
       #viewDiv {
@@ -43,12 +43,13 @@ async function fetchWeatherData() {
         temp_max = data.main.temp_max;
         temp_min = data.main.temp_min;
         temp_current = data.main.temp;
+        console.log(temp_current)
         return {temp_max, temp_min, temp_current}; // Return the weather data for further use
       } catch (error) {
           console.error('Error fetching weather data:', error);
       }
       }
-
+      fetchWeatherData().then(() => {
       if (temp_current >= 1.0 && temp_current < 5){
             weather_color = "blue"
       }
@@ -67,8 +68,8 @@ async function fetchWeatherData() {
       else {
         weather_color = "purple"
       }
-      console.log(weather_color)
-
+      console.log(weather_color)}
+    )
       require(["esri/WebScene", "esri/views/SceneView", "esri/layers/SceneLayer", "esri/widgets/Legend"], (
         WebScene,
         SceneView,
@@ -79,7 +80,7 @@ async function fetchWeatherData() {
         const webscene = new WebScene({
           portalItem: {
             // autocasts as new PortalItem()
-            id: "4dce380fe78543d79a5bff595db4488b"
+            id: "3083e15cefce40fb81d6a3b786dd75ca"
           }
         });
 
@@ -113,8 +114,92 @@ async function fetchWeatherData() {
           }
         });
 
+        const belltower = new SceneLayer({
+          portalItem: {
+            id: "8a0b6aa248d4400a90821257182cf003"
+          },
+          title: "Belltower",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const huerta = new SceneLayer({
+          portalItem: {
+            id: "750f49c4b49f41fdb9f67d885e31b295"
+          },
+          title: "Huerta",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const dino = new SceneLayer({
+          portalItem: {
+            id: "dd0c71f789e24b8d8bee2b39394b203d"
+          },
+          title: "Dino",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const observatory = new SceneLayer({
+          portalItem: {
+            id: "e72074736087464294f3d2e6dfb31433"
+          },
+          title: "Observatory",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const townhall = new SceneLayer({
+          portalItem: {
+            id: "fefa96c8a33e47c1ace83221107dbe4a"
+          },
+          title: "Townhall",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const plaza = new SceneLayer({
+          portalItem: {
+            id: "e4cae4e520b6434c9529f50e114bdb3a"
+          },
+          title: "Plaza",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
+        const museum = new SceneLayer({
+          portalItem: {
+            id: "9f47958de74f4595887ff4294fe5a101"
+          },
+          title: "Museum",
+          renderer: {
+            type: "simple",
+            symbol: symbol
+          }
+        });
+
 
         webscene.add(layer);
+        webscene.add(belltower);
+        webscene.add(observatory);
+        webscene.add(huerta);
+        webscene.add(townhall);
+        webscene.add(dino);
+
+        webscene.add(museum)
       })
     </script>
   </head>
@@ -131,7 +216,8 @@ async function fetchWeatherData() {
       <input type="radio" id="desaturate" name="mode" />
       <label for="desaturate">Desaturate texture</label> <br />
       <input type="radio" id="replace" name="mode" />
-      <label for="replace">Remove texture</label>
+      <label for="replace">Remove texture</label> 
     </div>
   </body>
+
 </html>
