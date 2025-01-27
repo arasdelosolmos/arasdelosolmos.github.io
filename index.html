@@ -49,7 +49,7 @@ async function fetchWeatherData() {
           console.error('Error fetching weather data:', error);
       }
       }
-      fetchWeatherData().then(() => {
+fetchWeatherData().then(() => {
       if (temp_current >= 1.0 && temp_current < 5){
             weather_color = "blue"
       }
@@ -70,137 +70,142 @@ async function fetchWeatherData() {
       }
       console.log(weather_color)}
     )
-      require(["esri/WebScene", "esri/views/SceneView", "esri/layers/SceneLayer", "esri/widgets/Legend"], (
-        WebScene,
-        SceneView,
-        SceneLayer,
-        Legend
-      ) => {
-        // Load a webscene and add it to the view
-        const webscene = new WebScene({
-          portalItem: {
-            // autocasts as new PortalItem()
-            id: "3083e15cefce40fb81d6a3b786dd75ca"
+    async function initializeScene() {
+        await fetchWeatherData(); // Ensure weather_color is set before continuing
+
+        require(
+          [
+            "esri/WebScene",
+            "esri/views/SceneView",
+            "esri/layers/SceneLayer",
+            "esri/widgets/Legend",
+          ],
+          (WebScene, SceneView, SceneLayer, Legend) => {
+            // Load a webscene and add it to the view
+            const webscene = new WebScene({
+              portalItem: {
+                id: "3083e15cefce40fb81d6a3b786dd75ca",
+              },
+            });
+
+            const view = new SceneView({
+              container: "viewDiv",
+              map: webscene,
+            });
+
+            const symbol = {
+              type: "mesh-3d", // autocasts as new MeshSymbol3D()
+              symbolLayers: [
+                {
+                  type: "fill", // autocasts as new FillSymbol3DLayer()
+                  material: {
+                    color: weather_color,
+                  },
+                  colorMixMode: "multiply",
+                },
+              ],
+            };
+
+            // Create SceneLayer with textured buildings
+            const layer = new SceneLayer({
+              portalItem: {
+                id: "e0d1b9938de747abb0171da501e3f38e",
+              },
+              title: "Laundry",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const belltower = new SceneLayer({
+              portalItem: {
+                id: "8a0b6aa248d4400a90821257182cf003",
+              },
+              title: "Belltower",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const huerta = new SceneLayer({
+              portalItem: {
+                id: "750f49c4b49f41fdb9f67d885e31b295",
+              },
+              title: "Huerta",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const dino = new SceneLayer({
+              portalItem: {
+                id: "dd0c71f789e24b8d8bee2b39394b203d",
+              },
+              title: "Dino",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const observatory = new SceneLayer({
+              portalItem: {
+                id: "e72074736087464294f3d2e6dfb31433",
+              },
+              title: "Observatory",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const townhall = new SceneLayer({
+              portalItem: {
+                id: "fefa96c8a33e47c1ace83221107dbe4a",
+              },
+              title: "Townhall",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const plaza = new SceneLayer({
+              portalItem: {
+                id: "e4cae4e520b6434c9529f50e114bdb3a",
+              },
+              title: "Plaza",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            const museum = new SceneLayer({
+              portalItem: {
+                id: "9f47958de74f4595887ff4294fe5a101",
+              },
+              title: "Museum",
+              renderer: {
+                type: "simple",
+                symbol: symbol,
+              },
+            });
+
+            webscene.add(layer);
+            webscene.add(belltower);
+            webscene.add(observatory);
+            webscene.add(huerta);
+            webscene.add(townhall);
+            webscene.add(dino);
+            webscene.add(museum);
           }
-        });
-
-        const view = new SceneView({
-          container: "viewDiv",
-          map: webscene
-        });
-
-        const symbol = {
-          type: "mesh-3d", // autocasts as new MeshSymbol3D()
-          symbolLayers: [
-            {
-              type: "fill", // autocasts as new FillSymbol3DLayer()
-              material: {
-                color: weather_color},
-              colorMixMode: "multiply",
-            }
-            
-          ]
-        };
-
-        // Create SceneLayer with textured buildings
-        const layer = new SceneLayer({
-          portalItem: {
-            id: "e0d1b9938de747abb0171da501e3f38e"
-          },
-          title: "Laundry",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const belltower = new SceneLayer({
-          portalItem: {
-            id: "8a0b6aa248d4400a90821257182cf003"
-          },
-          title: "Belltower",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const huerta = new SceneLayer({
-          portalItem: {
-            id: "750f49c4b49f41fdb9f67d885e31b295"
-          },
-          title: "Huerta",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const dino = new SceneLayer({
-          portalItem: {
-            id: "dd0c71f789e24b8d8bee2b39394b203d"
-          },
-          title: "Dino",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const observatory = new SceneLayer({
-          portalItem: {
-            id: "e72074736087464294f3d2e6dfb31433"
-          },
-          title: "Observatory",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const townhall = new SceneLayer({
-          portalItem: {
-            id: "fefa96c8a33e47c1ace83221107dbe4a"
-          },
-          title: "Townhall",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const plaza = new SceneLayer({
-          portalItem: {
-            id: "e4cae4e520b6434c9529f50e114bdb3a"
-          },
-          title: "Plaza",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-        const museum = new SceneLayer({
-          portalItem: {
-            id: "9f47958de74f4595887ff4294fe5a101"
-          },
-          title: "Museum",
-          renderer: {
-            type: "simple",
-            symbol: symbol
-          }
-        });
-
-
-        webscene.add(layer);
-        webscene.add(belltower);
-        webscene.add(observatory);
-        webscene.add(huerta);
-        webscene.add(townhall);
-        webscene.add(dino);
-
-        webscene.add(museum)
-      })
+        );
+      }
+      initializeScene();
     </script>
   </head>
 
