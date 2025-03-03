@@ -84,8 +84,9 @@ fetchWeatherData().then(() => {
             
             const webscene = new WebScene({
               portalItem: {
-                id: "3083e15cefce40fb81d6a3b786dd75ca",
+                id: "3083e15cefce40fb81d6a3b786dd75ca"  
               },
+              basemap: "hybrid"
             });
 
             const view = new SceneView({
@@ -212,18 +213,6 @@ fetchWeatherData().then(() => {
 
   <body>
     <div id="viewDiv"></div>
-    <div id="colorMixMode" class="esri-widget">
-      <input type="radio" id="original" name="mode" checked />
-      <label for="original">Buildings with original texture</label> <br />
-      <input type="radio" id="select" name="mode" />
-      <label for="select">Show commercial buildings</label> <br />
-      <input type="radio" id="emphasize" name="mode" />
-      <label for="emphasize">Emphasize commercial buildings</label> <br />
-      <input type="radio" id="desaturate" name="mode" />
-      <label for="desaturate">Desaturate texture</label> <br />
-      <input type="radio" id="replace" name="mode" />
-      <label for="replace">Remove texture</label> 
-    </div>
   </body>
 
 </html>
