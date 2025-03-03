@@ -26,7 +26,7 @@
 
 let openweathermapapi = '95de4d1641b053b5e200f8e7e94eb256';
 
-let cityId = 2509520; // City ID for the desired location
+let cityId = 2509520; 
 
 let apiUrl = `https://api.openweathermap.org/data/2.5/weather?id=2509520&units=metric&lang=en&appid=95de4d1641b053b5e200f8e7e94eb256`;
 let temp_max
@@ -39,12 +39,12 @@ async function fetchWeatherData() {
             throw new Error(`API call failed with status: ${response.status}`);
         }
         let data = await response.json();
-        //console.log(data.main.temp_max, data.main.temp_min); // Log the weather data
+        
         temp_max = data.main.temp_max;
         temp_min = data.main.temp_min;
         temp_current = data.main.temp;
         console.log(temp_current)
-        return {temp_max, temp_min, temp_current}; // Return the weather data for further use
+        return {temp_max, temp_min, temp_current}; 
       } catch (error) {
           console.error('Error fetching weather data:', error);
       }
@@ -71,7 +71,7 @@ fetchWeatherData().then(() => {
       console.log(weather_color)}
     )
     async function initializeScene() {
-        await fetchWeatherData(); // Ensure weather_color is set before continuing
+        await fetchWeatherData();
 
         require(
           [
@@ -81,7 +81,7 @@ fetchWeatherData().then(() => {
             "esri/widgets/Legend",
           ],
           (WebScene, SceneView, SceneLayer, Legend) => {
-            // Load a webscene and add it to the view
+            
             const webscene = new WebScene({
               portalItem: {
                 id: "3083e15cefce40fb81d6a3b786dd75ca",
@@ -94,10 +94,10 @@ fetchWeatherData().then(() => {
             });
 
             const symbol = {
-              type: "mesh-3d", // autocasts as new MeshSymbol3D()
+              type: "mesh-3d", 
               symbolLayers: [
                 {
-                  type: "fill", // autocasts as new FillSymbol3DLayer()
+                  type: "fill", 
                   material: {
                     color: weather_color,
                   },
@@ -175,7 +175,7 @@ fetchWeatherData().then(() => {
 
             const plaza = new SceneLayer({
               portalItem: {
-                id: "e4cae4e520b6434c9529f50e114bdb3a",
+                id: "49c2c9ba921b42bd9a67976e1ea1ea68",
               },
               title: "Plaza",
               renderer: {
@@ -191,7 +191,7 @@ fetchWeatherData().then(() => {
               title: "Museum",
               renderer: {
                 type: "simple",
-                symbol: symbol,
+                symbol: symbol, 
               },
             });
 
@@ -202,6 +202,7 @@ fetchWeatherData().then(() => {
             webscene.add(townhall);
             webscene.add(dino);
             webscene.add(museum);
+            webscene.add(plaza);
           }
         );
       }
